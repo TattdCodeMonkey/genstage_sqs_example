@@ -30,7 +30,11 @@ defmodule GenstageSqs do
   @doc """
   creates {number} of random messages and writes them to the SQS queue.
   """
-  def create_messages(number, queue \\ @queue_name) do
+  def create_messages(number, queue \\ @queue_name)
+  def create_messages(number, queue) when is_integer(number) and number >= 1 do
+    create_messages(1..number, queue)
+  end
+  def create_messages(number, queue) do
     Enum.map(number, &make_message/1)
     |> Enum.chunk(10,10)
     |> Enum.each(&(send_messages(&1, queue)))
