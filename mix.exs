@@ -3,8 +3,8 @@ defmodule GenstageSqs.Mixfile do
 
   def project do
     [app: :genstage_sqs,
-     version: "0.1.0",
-     elixir: "~> 1.4",
+     version: "0.2.0",
+     elixir: "~> 1.5",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -24,11 +24,12 @@ defmodule GenstageSqs.Mixfile do
 
   defp deps do
     [
-      {:ex_aws, "~> 1.1.0"},
-      {:poison, ">= 1.2.0"},
-      {:hackney, "~> 1.6"},
+      {:ex_aws, "~> 2.0"},
+      {:ex_aws_sqs, "~> 2.0"},
+      {:poison, "~> 3.0"},
+      {:hackney, "~> 1.9"},
       {:sweet_xml, "~> 0.6"},
-      {:gen_stage, "~> 0.11.0"},
+      {:gen_stage, "~> 0.12"},
       {:uuid, "~> 1.1"},
     ]
   end
