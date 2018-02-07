@@ -23,7 +23,7 @@ defmodule SQSConsumer do
   defp handle_messages(messages, state) do
     ## You probably want to handle errors or issues by NOT deleting
     ## those messages, but this is fine for our example
-    Enum.each(messages, &process_message/1)
+    messages = Enum.map(messages, &process_message/1)
 
     state.queue
     |> SQS.delete_message_batch(Enum.map(messages, &make_batch_item/1))
