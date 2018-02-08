@@ -7,6 +7,9 @@ You can read about this in my blog post [Writing a GenStage producer for AWS SQS
 
 ## Testing
 
-To run this example you will need to set the AWS keys as env variables or add them to the congis.exs. See ExAws docs for options for configuration. You will also need to set the `@queue_name` variables in `genstage_sqs.ex`.
+To run this example you will need to set the AWS keys as env variables in the command line or add them to the `config/config.exs` instead of the system envs. See ExAws docs for options for configuration.
 
-Then run `iex -S mix`, this will cause the producers to start pulling messages from SQS and sending them to the consumers. You can add more of each (producers & consumers) to process more messages or create less to process less messages.
+1. Run `AWS_ACCESS_KEY_ID=your_access_key AWS_SECRET_ACCESS_KEY=your_secret_key iex -S mix`
+2. Enter `iex(1)> GenstageSqs.create_messages(10)`
+
+This will cause the producers to start pulling messages from SQS and sending them to the consumers. You can add more of each (producers & consumers) to process more messages or create less to process less messages.

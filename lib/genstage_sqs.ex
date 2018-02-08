@@ -1,6 +1,5 @@
 defmodule GenstageSqs do
   use Supervisor
-  @queue_name "<your_sqs_queue>"
 
   def start(_, _) do
     Supervisor.start_link(__MODULE__, [], [])
@@ -10,18 +9,18 @@ defmodule GenstageSqs do
     children = [
       worker(
         SQSProducer,
-        [@queue_name, [name: :producer1]],
+        [Application.get_env(:genstage_sqs, :queue_name), [name: :producer1]],
         [id: "Producer.1"]
       ),
       worker(
         SQSProducer,
-        [@queue_name, [name: :producer2]],
+        [Application.get_env(:genstage_sqs, :queue_name), [name: :producer2]],
         [id: "Producer.2"]
       ),
-      worker(SQSConsumer, [@queue_name, [:producer1, :producer2]], [id: "Consumer.1"]),
-      worker(SQSConsumer, [@queue_name, [:producer1, :producer2]], [id: "Consumer.2"]),
-      worker(SQSConsumer, [@queue_name, [:producer1, :producer2]], [id: "Consumer.3"]),
-      worker(SQSConsumer, [@queue_name, [:producer1, :producer2]], [id: "Consumer.4"]),
+      worker(SQSConsumer, [Application.get_env(:genstage_sqs, :queue_name), [:producer1, :producer2]], [id: "Consumer.1"]),
+      worker(SQSConsumer, [Application.get_env(:genstage_sqs, :queue_name), [:producer1, :producer2]], [id: "Consumer.2"]),
+      worker(SQSConsumer, [Application.get_env(:genstage_sqs, :queue_name), [:producer1, :producer2]], [id: "Consumer.3"]),
+      worker(SQSConsumer, [Application.get_env(:genstage_sqs, :queue_name), [:producer1, :producer2]], [id: "Consumer.4"]),
     ]
 
     supervise(children, strategy: :one_for_one)
@@ -30,7 +29,7 @@ defmodule GenstageSqs do
   @doc """
   creates {number} of random messages and writes them to the SQS queue.
   """
-  def create_messages(number, queue \\ @queue_name)
+  def create_messages(number, queue \\ Application.get_env(:genstage_sqs, :queue_name))
   def create_messages(number, queue) when is_integer(number) and number >= 1 do
     create_messages(1..number, queue)
   end
